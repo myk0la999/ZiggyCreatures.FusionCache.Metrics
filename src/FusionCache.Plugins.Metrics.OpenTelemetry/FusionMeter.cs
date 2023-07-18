@@ -8,7 +8,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion.Events;
@@ -32,51 +31,18 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         private Counter<int>? _cacheRemovedCounter;
         
         private readonly Meter _meter;
-        private readonly MemoryCache? _cache;
+        private readonly MemoryCache _cache;
         private readonly ISemanticConventions _conventions;
-        private readonly string _cacheName;
-        private MetricsConfig _metricsConfig;
-        private readonly KeyValuePair<string, object?> _cacheNameTag;
-        private readonly KeyValuePair<string, object?> _applicationTagName;
-        private readonly KeyValuePair<string, object?> _applicationVersionTagName;
 
         public FusionMeter(
-            string cacheName,
-            string? measurementName = null,
-            MetricsConfig? metricsConfig = null,
-            ISemanticConventions? semanticConventions = null)
-            : this(
-                cacheName,
-                new MemoryCache(new MemoryCacheOptions()),
-                measurementName, 
-                metricsConfig,
-                semanticConventions
-                )
-        {
-        } 
-
-        public FusionMeter(
-            string cacheName,
-            IMemoryCache? cache,
-            string? measurementName = null,
-            MetricsConfig? metricsConfig = null,
+            string meterName,
+            MemoryCache cache,
             ISemanticConventions? semanticConventions = null)
         {
-            _cacheName = cacheName;
-            _metricsConfig = metricsConfig ?? new MetricsConfig();
-            var _measurementName = measurementName ?? $"{_metricsConfig.Prefix}{_metricsConfig.ApplicationName}_{_metricsConfig.MeasurementName}";
             _conventions = semanticConventions ?? new SemanticConventions();
-
-            if (cache is MemoryCache memoryCache)
-            {
-                _cache = memoryCache;
-            }
-
-            _meter = new Meter($"{cacheName}_{_measurementName}");
+            _cache = cache;
+            _meter = new Meter(meterName);
             CreateCounters();
-            _cacheNameTag = new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _cacheName);
-            _applicationTagName = new KeyValuePair<string, object?>(_conventions.ApplicationTagName, _metricsConfig.ApplicationName);
-            _applicationVersionTagName = new KeyValuePair<string, object?>(_conventions.ApplicationVersionTagName, _metricsConfig.ApplicationVersion);
         }
 
         private void CreateCounters()
@@ -96,10 +62,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
             
             _meter.CreateObservableGauge<long>(
                 _conventions.CacheItemCountTagValue,
-                () => new Measurement<long>(_cache?.Count ?? 0,
-                    _cacheNameTag, 
-                    _applicationTagName, 
-                    _applicationVersionTagName),
+                () => new Measurement<long>(_cache.Count),
                 description: "Cache Size");
         }
 
@@ -110,32 +73,20 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// <summary>Cache item hit counter.</summary>
         public void CacheHit()
         {
-            _cacheHitCounter?.Add(1, 
-                _cacheNameTag, 
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheHitCounter?.Add(1);
         }
 
         /// <summary>
         /// Cache item miss counter.  When a cache item is not found in the local cache
         /// </summary>
-        public void CacheMiss()
-        {
-            _cacheMissCounter?.Add(1, 
-                _cacheNameTag,
-                _applicationTagName,
-                _applicationVersionTagName);
-        }
+        public void CacheMiss() => _cacheMissCounter?.Add(1);
 
         /// <summary>
         /// Cache item set counter.  When a cache item is written to local cache
         /// </summary>
         public void CacheSet()
         {
-            _cacheSetCounter?.Add(1, 
-                _cacheNameTag,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheSetCounter?.Add(1);
         }
 
         /// <summary>
@@ -143,75 +94,55 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// </summary>
         public void CacheStaleHit()
         {
-            _cacheStaleHitCounter?.Add(1,
-                _cacheNameTag,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheStaleHitCounter?.Add(1);
         }
 
         /// <summary>Cache item refresh in background.</summary>
         public void CacheBackgroundRefreshSuccess()
         {
-            _cacheBackgroundRefreshedCounter?.Add(1,
-                _cacheNameTag,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheBackgroundRefreshedCounter?.Add(1);
         }
 
         /// <summary>Cache item refresh in background failed.</summary>
         public void CacheBackgroundRefreshError()
         {
-            _cacheBackgroundRefreshedErrorCounter?.Add(1,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheBackgroundRefreshedErrorCounter?.Add(1);
         }
 
         /// <summary>Generic cache factory error.</summary>
         public void CacheFactoryError()
         {
-            _cacheCacheFactoryErrorCounter?.Add(1,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheCacheFactoryErrorCounter?.Add(1);
         }
 
         /// <summary>Cache factory synthetic timeout</summary>
         public void CacheFactorySyntheticTimeout()
         {
-            _cacheFactorySyntheticTimeoutCounter?.Add(1,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheFactorySyntheticTimeoutCounter?.Add(1);
         }
 
         /// <summary>The event for a fail-safe activation.</summary>
         public void CacheFailSafeActivate()
         {
-            _cacheFailSafeActivateCounter?.Add(1,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheFailSafeActivateCounter?.Add(1);
         }
 
         /// <summary>Cache item expired</summary>
         public void CacheExpired()
         {
-            _cacheExpiredEvictCounter?.Add(1,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheExpiredEvictCounter?.Add(1);
         }
 
         /// <summary>Cache item removed due to capacity</summary>
         public void CacheCapacityExpired()
         {
-            _cacheCapacityEvictCounter?.Add(1,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheCapacityEvictCounter?.Add(1);
         }
 
         /// <summary>Cache item explicitly removed by user code</summary>
         public void CacheRemoved()
         {
-            _cacheRemovedCounter?.Add(1,
-                _applicationTagName,
-                _applicationVersionTagName);
+            _cacheRemovedCounter?.Add(1);
         }
 
         #endregion
