@@ -111,7 +111,7 @@ builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").G
 //
 
 builder.Services.AddSingleton<IFusionCachePlugin>(
-    new FusionMeter(domainMeterName, $"appMetrics_{serviceName}_cache_events", metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()));
+    new FusionMeter(domainMeterName, new MemoryCache(new MemoryCacheOptions())));
 
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
@@ -146,7 +146,7 @@ builder.Services.AddSingleton(serviceProvider =>
             .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
     };
 
-    var metrics = new FusionMeter(emailMeterName, $"appMetrics_{serviceName}_cache_events", metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
+    var metrics = new FusionMeter(emailMeterName, new MemoryCache(new MemoryCacheOptions()));
     var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, metrics.MemoryCache, logger);
     metrics.Start(fusionCache);
 

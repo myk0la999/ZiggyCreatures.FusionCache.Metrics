@@ -84,66 +84,36 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// <summary>
         /// Cache item set counter.  When a cache item is written to local cache
         /// </summary>
-        public void CacheSet()
-        {
-            _cacheSetCounter?.Add(1);
-        }
+        public void CacheSet() => _cacheSetCounter?.Add(1);
 
         /// <summary>
         /// Cache item stale hit counter.  Cache item failed to complete within soft timeout period.
         /// </summary>
-        public void CacheStaleHit()
-        {
-            _cacheStaleHitCounter?.Add(1);
-        }
+        public void CacheStaleHit() => _cacheStaleHitCounter?.Add(1);
 
         /// <summary>Cache item refresh in background.</summary>
-        public void CacheBackgroundRefreshSuccess()
-        {
-            _cacheBackgroundRefreshedCounter?.Add(1);
-        }
+        public void CacheBackgroundRefreshSuccess() => _cacheBackgroundRefreshedCounter?.Add(1);
 
         /// <summary>Cache item refresh in background failed.</summary>
-        public void CacheBackgroundRefreshError()
-        {
-            _cacheBackgroundRefreshedErrorCounter?.Add(1);
-        }
+        public void CacheBackgroundRefreshError() => _cacheBackgroundRefreshedErrorCounter?.Add(1);
 
         /// <summary>Generic cache factory error.</summary>
-        public void CacheFactoryError()
-        {
-            _cacheCacheFactoryErrorCounter?.Add(1);
-        }
+        public void CacheFactoryError() => _cacheCacheFactoryErrorCounter?.Add(1);
 
         /// <summary>Cache factory synthetic timeout</summary>
-        public void CacheFactorySyntheticTimeout()
-        {
-            _cacheFactorySyntheticTimeoutCounter?.Add(1);
-        }
+        public void CacheFactorySyntheticTimeout() => _cacheFactorySyntheticTimeoutCounter?.Add(1);
 
         /// <summary>The event for a fail-safe activation.</summary>
-        public void CacheFailSafeActivate()
-        {
-            _cacheFailSafeActivateCounter?.Add(1);
-        }
+        public void CacheFailSafeActivate() => _cacheFailSafeActivateCounter?.Add(1);
 
         /// <summary>Cache item expired</summary>
-        public void CacheExpired()
-        {
-            _cacheExpiredEvictCounter?.Add(1);
-        }
+        public void CacheExpired() => _cacheExpiredEvictCounter?.Add(1);
 
         /// <summary>Cache item removed due to capacity</summary>
-        public void CacheCapacityExpired()
-        {
-            _cacheCapacityEvictCounter?.Add(1);
-        }
+        public void CacheCapacityExpired() => _cacheCapacityEvictCounter?.Add(1);
 
         /// <summary>Cache item explicitly removed by user code</summary>
-        public void CacheRemoved()
-        {
-            _cacheRemovedCounter?.Add(1);
-        }
+        public void CacheRemoved() => _cacheRemovedCounter?.Add(1);
 
         #endregion
         /// <inheritdoc />
