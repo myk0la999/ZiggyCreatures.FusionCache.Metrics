@@ -99,8 +99,6 @@ builder.Services.AddOpenTelemetry().WithMetrics(meterBuilder =>
 
 // Add services to the container.
 
-builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
-
 //
 // Cache called "domain"
 //
