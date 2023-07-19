@@ -109,7 +109,7 @@ builder.Services.AddOpenTelemetry().WithMetrics(meterBuilder =>
 //
 
 builder.Services.AddSingleton<IFusionCachePlugin>(
-    new FusionMeter(domainMeterName, new MemoryCache(new MemoryCacheOptions())));
+    new FusionMeter(domainMeterName));
 
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
@@ -144,7 +144,7 @@ builder.Services.AddSingleton(serviceProvider =>
             .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
     };
 
-    var metrics = new FusionMeter(emailMeterName, new MemoryCache(new MemoryCacheOptions()));
+    var metrics = new FusionMeter(emailMeterName);
     var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, metrics.MemoryCache, logger);
     metrics.Start(fusionCache);
 
