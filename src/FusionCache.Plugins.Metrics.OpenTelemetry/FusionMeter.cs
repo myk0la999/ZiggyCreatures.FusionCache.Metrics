@@ -31,12 +31,12 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         private Counter<int>? _cacheRemovedCounter;
         
         private readonly Meter _meter;
-        private readonly MemoryCache _cache;
+        private readonly MemoryCache? _cache;
         private readonly ISemanticConventions _conventions;
 
         public FusionMeter(
             string meterName,
-            MemoryCache cache,
+            MemoryCache? cache = null,
             ISemanticConventions? semanticConventions = null)
         {
             _conventions = semanticConventions ?? new SemanticConventions();
@@ -60,13 +60,15 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
             _cacheCapacityEvictCounter = _meter.CreateCounter<int>(_conventions.CacheCapacityEvictTagValue, description: "Cache Capacity Eviction");
             _cacheRemovedCounter = _meter.CreateCounter<int>(_conventions.CacheRemovedTagValue, description: "Cache Removed");
             
-            _meter.CreateObservableGauge<long>(
-                _conventions.CacheItemCountTagValue,
-                () => new Measurement<long>(_cache.Count),
-                description: "Cache Size");
+            if(_cache != null) {
+                _meter.CreateObservableGauge<long>(
+                    _conventions.CacheItemCountTagValue,
+                    () => new Measurement<long>(_cache.Count),
+                    description: "Cache Size");
+            }
         }
 
-        public MemoryCache MemoryCache => _cache;
+        public MemoryCache? MemoryCache => _cache;
 
         #region IFusionMetrics
 
