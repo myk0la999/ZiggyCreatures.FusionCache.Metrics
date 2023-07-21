@@ -34,6 +34,19 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         private readonly MemoryCache? _cache;
         private readonly ISemanticConventions _conventions;
 
+        /// <summary>
+        /// Initializes a new instance of the FusionMeter class with the given parameters.
+        /// </summary>
+        /// <param name="meterName"> Name of the meter that will be used to report the metrics. </param>
+        /// <param name="cache"> 
+        /// Same MemoryCache instance that was passed to FusionCache.
+        /// Is needed to report the cache size.
+        /// If not provided cache size metric will not be reported. 
+        /// </param>
+        /// <param name="semanticConventions">
+        /// Semantic conventions that are used to construct instrument names.
+        /// If not provided new instance of <see cref="SemanticConventions" /> will be used.
+        /// </param>
         public FusionMeter(
             string meterName,
             MemoryCache? cache = null,
@@ -159,6 +172,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
                 CacheHit();
             }
         }
+        
         private void HandleCacheMiss(object sender, FusionCacheEntryEventArgs e)
         {
             CacheMiss();
