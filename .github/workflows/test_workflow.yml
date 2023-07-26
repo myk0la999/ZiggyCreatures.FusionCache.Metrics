@@ -1,4 +1,4 @@
-name: .NET
+name: Test veriables
 
 on:
   [push, pull_request]
