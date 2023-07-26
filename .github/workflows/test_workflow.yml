@@ -4,16 +4,16 @@ on:
   [push, pull_request]
   
 env:
-  ENVVAR: ${{ vars.ENVVAR }}
+  ENVVAR: ${{ vars.ENVVAR }} # Set environmental variable based on github variable
   
 jobs:
-  build:
+  setup_variables:
 
     runs-on: ubuntu-latest
 
     steps:
     - name: Set default variable values
       run: echo "ENVVAR=DefaultValue" >> $GITHUB_ENV
-      if: ${{ !env.ENVVAR }}
+      if: ${{ !env.ENVVAR }} # Run this step only in case variable is not set in github
     - name: Print env variables
       run: echo "Variable value is $ENVVAR"
