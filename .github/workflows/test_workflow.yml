@@ -3,16 +3,15 @@ name: Test veriables
 on:
   [push, pull_request]
   
+env:
+  ENVVAR: ${{ vars.ENVVAR }}
+  
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Load from var context
-      run: echo "Variable value is ${{ vars.ENVVAR }}"
-    - name: Load from var context
-      run: echo "ENVVAR=${{ vars.ENVVAR }}" >> $GITHUB_ENV
     - name: Set default variable values
       run: echo "ENVVAR=DefaultValue" >> $GITHUB_ENV
       if: ${{ !env.ENVVAR }}
