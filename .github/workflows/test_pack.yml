@@ -1,0 +1,32 @@
+on:
+  push:
+    tags:
+    - "vtest[0-9]+.[0-9]+.[0-9]+"
+    
+env:
+  AUTHORS: ${{ vars.AUTHORS || 'Joe Shook' }}
+  PACKAGE_ID: ${{ vars.PACKAGE_ID || 'JoeShook.ZiggyCreatures.FusionCache.Metrics.OpenTelemetry' }}
+  COPYRIGHT: ${{ vars.COPYRIGHT || 'Copyright © Joe Shook 2022' }}
+  ROOT_NAMESPACE: ${{ vars.ROOT_NAMESPACE || 'ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry' }}
+  ASSEMBLY_NAME: ${{ vars.ASSEMBLY_NAME || 'ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry' }}
+  REPOSITORY_URL: ${{ vars.REPOSITORY_URL || 'https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics' }}
+  PACKAGE_PROJECT_URL: ${{ vars.PACKAGE_PROJECT_URL || 'https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics' }}
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Set VERSION variable from tag
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+    - name: Pack
+      run: |
+        dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.OpenTelemetry/FusionCache.Plugins.Metrics.OpenTelemetry.csproj --output .
+    - name: List
+      run: ls
