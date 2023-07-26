@@ -13,6 +13,6 @@ jobs:
       run: echo "Variable value is $ENVVAR"
     - name: Set default variable values
       run: echo "ENVVAR=DefaultValue" >> $GITHUB_ENV
-      if: {{ !env.ENVVAR }}
+      if: ${{ !env.ENVVAR }}
     - name: Print env variables
       run: echo "Variable value is $ENVVAR"
