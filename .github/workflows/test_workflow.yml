@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: Set default variable values
-      run: ENVVAR=DefaultValue
+      run: export ENVVAR=DefaultValue
       if: ${{ !env.ENVVAR }}
     - name: Print env variables
       run: echo "Variable value is $ENVVAR"
