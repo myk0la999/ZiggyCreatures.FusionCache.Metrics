@@ -10,9 +10,7 @@ jobs:
 
     steps:
     - name: Set default variable values
-      run: |
-        echo "Variable doesnt exist, setting default value for it"
-        ENVVAR=DefaultValue
+      run: ENVVAR=DefaultValue
       if: ${{ !env.ENVVAR }}
     - name: Print env variables
       run: echo "Variable value is $ENVVAR"
