@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: Print value
-      run: echo "Variable value is $ENVVAR"
+      run: echo "ENVVAR=${{ variables.my_variable }}" >> $GITHUB_ENV
     - name: Set default variable values
       run: echo "ENVVAR=DefaultValue" >> $GITHUB_ENV
       if: ${{ !env.ENVVAR }}
