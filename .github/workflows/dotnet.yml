@@ -1,6 +1,7 @@
 name: .NET
 
-on: [push, pull_request]
+on:
+  push
 
 env:
   # Stop wasting time caching packages
