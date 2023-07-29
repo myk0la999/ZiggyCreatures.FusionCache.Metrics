@@ -1,7 +1,10 @@
 name: .NET
 
 on:
-  push
+  push:
+    branches: [ main, develop, otelWithExample ]
+  pull_request:
+    branches: [ main ]
 
 env:
   # Stop wasting time caching packages
