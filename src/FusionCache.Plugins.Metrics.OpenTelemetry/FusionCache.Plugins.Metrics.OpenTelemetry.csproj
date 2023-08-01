@@ -15,8 +15,8 @@
       <PackageLicenseExpression>MIT</PackageLicenseExpression>
       <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics;EventSource;EventCounter;DiagnosticCounter;OpenTelemetry</PackageTags>
       <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-      <RootNamespace>$(ROOT_NAMESPACE)</RootNamespace>
-      <AssemblyName>$(ASSEMBLY_NAME)</AssemblyName>
+      <RootNamespace>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry</RootNamespace>
+      <AssemblyName>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry</AssemblyName>
       <PackageReadmeFile>README.md</PackageReadmeFile>
       <RepositoryUrl>$(REPOSITORY_URL)</RepositoryUrl>
       <RepositoryType>git</RepositoryType>

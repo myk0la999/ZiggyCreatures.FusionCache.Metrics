@@ -7,8 +7,6 @@ env:
   AUTHORS: ${{ vars.AUTHORS || 'Joe Shook' }}
   PACKAGE_ID: ${{ vars.PACKAGE_ID || 'JoeShook.ZiggyCreatures.FusionCache.Metrics.OpenTelemetry' }}
   COPYRIGHT: ${{ vars.COPYRIGHT || 'Copyright © Joe Shook 2022' }}
-  ROOT_NAMESPACE: ${{ vars.ROOT_NAMESPACE || 'ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry' }}
-  ASSEMBLY_NAME: ${{ vars.ASSEMBLY_NAME || 'ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry' }}
   REPOSITORY_URL: ${{ vars.REPOSITORY_URL || 'https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics' }}
   PACKAGE_PROJECT_URL: ${{ vars.PACKAGE_PROJECT_URL || 'https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics' }}
 
